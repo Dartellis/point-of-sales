@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		/*
+		Below is a basic Point of Sale system that we might
+		see in a shop or restaurant. Some of the functions
+		aren't yet complete. Your job is to complete them
+		so we can sell items to customers!
+		*/
+
+		/*
+		First, let's set up some demo data for us
+		to use for testing
+		*/
+		var inventory = [
+			{
+				name: "Gumball",
+				price: 25,
+				quantity: 30,
+				id: 12333
+			},
+			{
+				name: "Chocolate Bar",
+				price: 100,
+				quantity: 40,
+				id: 34223
+			},
+			{
+				name: "Fancy Chocolate Bar",
+				price: 300,
+				quantity: 10,
+				id: 8932
+			}
+		];
+
+		var customers = [
+			{
+				name: "erty",
+				cart: [
+					12333,
+					12333,
+					34223
+				]
+			},
+			{
+				name: "sarah",
+				cart: [
+					8932,
+					12333
+				]
+			}
+		];
+
+		var totalMoneyMade = 32923;
+
+		function getItemByID(itemID) {
+			// todo: take in item id as a number
+			// and return a reference to that item
+			// in the inventory
+
+			// go through each item in the inventory
+			for (var item of inventory) {
+				// if that item's id is itemID, return the item
+				if (item.id === itemID) {
+					return item;
+				}
+			}
+		}
+
+		function getSubTotalForCustomer(customerObj) {
+			// Take in a reference to a customer object
+			
+			// Initialize variable to store subtotal sum
+			var subtotal = 0;
+			for(var itemID of customerObj.cart){
+				// For each item in the customers cart, add the price of that item to the subtotal
+				subtotal += getItemByID(itemID).price;
+			}
+
+			// Return the calculated subtotal of the provided customers cart. 
+			return subtotal;
+		}
+
+		function markItemSold(itemObj) {
+			// Take in an item reference
+
+			// Update quantity of that item. 
+			itemObj.quantity--; 
+
+			// Keeping chocolate stocked is the only thing that matters 
+			if(itemObj.name === "chocolate" && itemObj.quantity <= 1){
+				console.log("Order chocolate or face the rath of the cocoa feens");
+			}
+		}
+
+		function checkOutCustomer(customerObj) {
+			// Take in a customer object...
+
+			// Compute the total cost of the things in their cart using getSubTotalForCustomer function and add that to the totalMoneyMade
+			totalMoneyMade += getSubTotalForCustomer(customerObj);
+
+			// Update our inventory 
+			for(var itemID of customerObj.cart){
+				markItemSold(getItemByID(itemID));
+			}
+
+			// Empty that customer's cart
+			customerObj.cart = [];
+		}
+
+		function createNewCustomer(name) {
+			// Initialize new customer object with name attribute containing a string and a cart attribute containing array of item ids
+			var newCustomer = {
+				name: name,
+				cart: []
+			};
+
+			// Add a new customer to the system
+			customers.push(newCustomer);
+
+			// Return a reference to the new customer
+			return newCustomer;
+		}
+
+		function createNewItem(name, price, id) {
+			// Initialize a new item object with name, price, quntity id attributs
+			var newItem = {
+				name: name,
+				price: price,
+				quantity: 0,
+				id: id
+			};
+
+			// Add new item to inventory array
+			inventory.push(newItem);
+
+			// Return a refrence to newItem object
+			return newItem;
+		}
+
+	</script>
+</body>
+</html>
